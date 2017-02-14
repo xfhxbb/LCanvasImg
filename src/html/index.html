@@ -1,0 +1,201 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="lennyhuang">
+    <meta name="viewport" content="width=device-width,initial-scale=1, user-scalable=0,maximum-scale=1">
+    <meta name="format-detection" content="telephone=no, email=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="full-screen" content="yes">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="mobile-web-app-capable" content="yes">
+    <!-- UC应用模式 -->
+    <meta name="browsermode" content="application">
+    <meta name="x5-orientation" content="portrait">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <title>图像文字合成插件</title>
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+        -webkit-appearance: none;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        -webkit-touch-callout: none;
+        box-sizing: border-box;
+    }
+    
+    body {
+        background-color: #ddd;
+        -webkit-user-select: none;
+        font-family: 'fzjt';
+        margin: 0;
+        padding: 100px 0;
+    }
+    
+    @font-face {
+        font-family: 'fzjt';
+        src: url('../fonts/fzjt.ttf');
+        font-weight: normal;
+        font-style: normal;
+    }
+    
+    canvas {
+        border: 0;
+        display: block;
+        margin: auto;
+    }
+    
+    input {
+        width: 90%;
+        height: 40px;
+        font-size: 18px;
+        border: 1px solid #b72f20;
+        border-radius: 5px;
+        margin: 20px 5% 0 5%;
+        padding: 5px;
+    }
+    
+    input[type=button] {
+        width: 90%;
+        height: 40px;
+        font-size: 18px;
+        border: 1px solid #b72f20;
+        background-color: #b72f20;
+        color: #fff;
+        border-radius: 5px;
+        margin: 20px 5% 0 5%;
+        padding: 5px;
+    }
+    
+    p {
+        text-align: center;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="qrcode" style="display: none;"></div>
+    <p>
+        输入内容后点击生成：
+        <input type="text" id="mytxt1" value="黄磊" />
+        <input type="text" id="myqr" value="https://res.imtt.qq.com/lenny/showf/index.html" />
+        <input type="button" id="send" value="生成签名档" />
+    </p>
+    <script src="../lib/qrcode.js"></script>
+    <script src="../js/canvas-img.js"></script>
+    <script>
+    /**
+     * 
+     * 初始化二维码生成插件
+     * 
+     */
+    var qrdata = '';
+    var myqr = document.querySelector('#myqr');
+    var qrcode = document.querySelector('#qrcode');
+    var qr = new QRCode(qrcode, {
+        width: 300,
+        height: 300,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.L
+    });
+    function buildQr () {
+    var img = qrcode.querySelector('img');
+    img.onload = function() {
+        qrdata = img.src;
+        main();
+    };
+    qr.makeCode(myqr.value);
+    }
+    var canvasImg = null;
+
+    function main() {
+        canvasImg = new LCanvasImg({
+            cw: 768,
+            ch: 1163,
+            iw: '100%',
+            ih: 'auto',
+            display:'none'
+        });
+        canvasImg.load([{
+            name: 'qr',
+            src: qrdata
+        }, {
+            name: 'bg',
+            src: '../img/bg.jpg'
+        }, {
+            name: 'z',
+            src: '../img/z.png'
+        }], build);
+    };
+
+    function build() {
+        var farr = [{
+            txt: document.querySelector('#mytxt1').value,
+            fontsize: 26,
+            fontfamily: 'fzjt',
+            ftop: 140,
+            fleft: 194
+        }, {
+            txt: '胡鑫',
+            fontsize: 26,
+            fontfamily: 'fzjt',
+            ftop: 220,
+            fleft: 394
+        }, {
+            txt: '邓逸昕',
+            fontsize: 26,
+            fontfamily: 'fzjt',
+            ftop: 220,
+            fleft: 294
+        }, {
+            txt: document.querySelector('#mytxt1').value,
+            fontsize: 26,
+            fontfamily: 'fzjt',
+            ftop: 220,
+            fleft: 194
+        }];
+        canvasImg.addImg({
+            name: 'bg',
+            x: 0,
+            y: 0,
+            width: 768,
+            height: 1163
+        });
+        farr.forEach(function(obj) {
+            canvasImg.addFont(obj);
+        });
+        canvasImg.addImg({
+            name: 'z',
+            x: 0,
+            y: 0,
+            width: 100,
+            height: 100
+        });
+        canvasImg.addImg({
+            name: 'z',
+            sx: 0,
+            sy: 0,
+            sw: 150,
+            sh: 150,
+            x: 100,
+            y: 100,
+            width: 100,
+            height: 100
+        });
+        canvasImg.addImg({
+            name: 'qr',
+            x: 400,
+            y: 800,
+            width: 200,
+            height: 200
+        });
+    };
+    window.onload = buildQr;
+    document.getElementById("send").onclick = buildQr;
+    </script>
+</body>
+
+</html>

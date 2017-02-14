@@ -1,0 +1,22 @@
+{
+  "name": "LCanvasImg",
+  "version": "1.0.0",
+  "description": "图像文字二维码合成插件",
+  "homepage": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xfhxbb/LCanvasImg"
+  },
+  "author": "黄磊",
+  "license": "MIT",
+  "devDependencies": {
+    "del": "^2.2.2",
+    "autoprefixer": "^6.3.6",
+    "browser-sync": "^2.12.12",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-header": "^1.8.2",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.5.3"
+  }
+}
