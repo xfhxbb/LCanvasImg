@@ -82,6 +82,7 @@
         <input type="text" id="mytxt1" value="黄磊" />
         <input type="text" id="myqr" value="https://res.imtt.qq.com/lenny/showf/index.html" />
         <input type="button" id="send" value="生成签名档" />
+        <img id="LCanvasImg_img" src="" alt="">
     </p>
     <script src="../lib/qrcode.js"></script>
     <script src="../js/canvas-img.js"></script>
@@ -112,13 +113,17 @@
     var canvasImg = null;
 
     function main() {
+        //初始化
         canvasImg = new LCanvasImg({
-            cw: 768,
-            ch: 1163,
-            iw: '100%',
-            ih: 'auto',
-            display:'none'
+            cw: 768,//canvas width
+            ch: 1163,//canvas height
+            iw: '100%',//output img width
+            ih: 'auto',//output img height
+            itype:'image/jpeg',//output img type [image/png,image/jpeg,image/webp]
+            iquality:0.52,////压缩比 默认0.1  范围0.1-1.0 越小压缩率越大
+            display:'none'//canvas display
         });
+        //资源加载
         canvasImg.load([{
             name: 'qr',
             src: qrdata
@@ -192,6 +197,7 @@
             width: 200,
             height: 200
         });
+        canvasImg.showImg();
     };
     window.onload = buildQr;
     document.getElementById("send").onclick = buildQr;

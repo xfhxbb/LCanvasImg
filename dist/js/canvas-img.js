@@ -20,6 +20,8 @@
             ch: window.innerHeight,
             iw: '100%',
             ih: 'auto',
+            itype:'image/jpeg',
+            iquality:1,////压缩比 默认0.1  范围0.1-1.0 越小压缩率越大
             display: 'none'
         }
         for (var param in params) {
@@ -54,12 +56,6 @@
         },
         load: function(arr, callback) {
             var _self = this;
-            var body = document.querySelector('body');
-            body.addEventListener('complete', function() {
-                callback();
-                console.log('complete');
-            });
-            //var increment = Math.floor(100 / arr.length);//将进度分成几份
             var i = 1;
             arr.forEach(function(obj, index, array) {
                 function onLoad() {
@@ -67,15 +63,7 @@
                     if (i < array.length) {
                         ++i;
                     } else {
-                        var evt;
-                        try {
-                            evt = new CustomEvent('complete');
-                        } catch (e) {
-                            //兼容旧浏览器(注意：该方法已从最新的web标准中删除)
-                            evt = document.createEvent('Event');
-                            evt.initEvent('complete', true, true);
-                        }
-                        body.dispatchEvent(evt);
+                        callback();
                     };
                 }
                 var img = new Image();
@@ -111,7 +99,6 @@
             } else {
                 ctx.drawImage(_self[obj.name], 0, 0);
             }
-            _self.showImg();
         },
         showImg: function() {
             var _self = this;
@@ -120,13 +107,13 @@
             if (LCanvasImg_img) {
                 LCanvasImg_img.style.width = _self.params.iw;
                 LCanvasImg_img.style.height = _self.params.ih;
-                LCanvasImg_img.src = canvas.toDataURL();
+                LCanvasImg_img.src = canvas.toDataURL(_self.params.itype,_self.params.iquality);
             } else {
                 var img = new Image();
                 img.id = 'LCanvasImg_img';
                 img.style.width = _self.params.iw;
                 img.style.height = _self.params.ih;
-                img.src = canvas.toDataURL();
+                img.src = canvas.toDataURL(_self.params.itype,_self.params.iquality);
                 document.body.appendChild(img);
             }
         }
