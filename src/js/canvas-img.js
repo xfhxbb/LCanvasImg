@@ -20,8 +20,8 @@
             ch: window.innerHeight,
             iw: '100%',
             ih: 'auto',
-            itype:'image/jpeg',
-            iquality:1,////压缩比 默认0.1  范围0.1-1.0 越小压缩率越大
+            itype: 'image/jpeg',
+            iquality: 1, ////压缩比 默认0.1  范围0.1-1.0 越小压缩率越大
             display: 'none'
         }
         for (var param in params) {
@@ -67,6 +67,7 @@
                     };
                 }
                 var img = new Image();
+                img.setAttribute("crossOrigin", 'Anonymous');
                 img.onload = onLoad;
                 img.onerror = onLoad;
                 img.src = obj.src;
@@ -107,13 +108,17 @@
             if (LCanvasImg_img) {
                 LCanvasImg_img.style.width = _self.params.iw;
                 LCanvasImg_img.style.height = _self.params.ih;
-                LCanvasImg_img.src = canvas.toDataURL(_self.params.itype,_self.params.iquality);
+                //LCanvasImg_img.src = canvas.toDataURL(_self.params.itype,_self.params.iquality);
+                //LCanvasImg_img.src = canvas.toDataURL("image/png",1.0);
+                LCanvasImg_img.src = canvas.toDataURL("image/png", 1.0);
             } else {
                 var img = new Image();
                 img.id = 'LCanvasImg_img';
                 img.style.width = _self.params.iw;
                 img.style.height = _self.params.ih;
-                img.src = canvas.toDataURL(_self.params.itype,_self.params.iquality);
+                //img.src = canvas.toDataURL(_self.params.itype,_self.params.iquality);
+                //img.src = canvas.toDataURL(_self.params.itype,_self.params.iquality);
+                img.src = canvas.toDataURL("image/png", 0.1);
                 document.body.appendChild(img);
             }
         }
